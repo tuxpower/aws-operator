@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"errors"
 	"log"
 
 	"github.com/giantswarm/awstpr"
@@ -36,5 +37,6 @@ func (ts *TestSet) TestCRExists() (string, error) {
 		ts.logger.Log("debug", "aws tpr not found, "+err.Error())
 		return desc, err
 	}
-	return desc, nil
+	return desc, errors.New("pawel tests the CI")
+
 }
