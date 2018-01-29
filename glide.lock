@@ -1,5 +1,5 @@
-hash: da154a50e003375cf10f0e93b3345508032d985b4a9f157296d7bf7765362d35
-updated: 2018-01-26T13:13:12.534074523+02:00
+hash: 42db5ff98157859f490724b39acc55d0571ec56e1f1aa036eac4404370307621
+updated: 2018-01-29T19:55:47.142290257+02:00
 imports:
 - name: github.com/aws/aws-sdk-go
   version: 8b344ddb7a49daf794928d1db484ad9a81499858
@@ -86,7 +86,7 @@ imports:
 - name: github.com/giantswarm/ipam
   version: 1aca843768d0b64404f88e99b87729f85e3aea3a
 - name: github.com/giantswarm/k8scloudconfig
-  version: 789bebcf0f5b227b53aee3460265e4e2b890f5c9
+  version: 9f4d90740aba1484362c1b76fa3ccefd3bb5c33b
   subpackages:
   - v_2_0_0
   - v_3_0_0
@@ -170,7 +170,7 @@ imports:
   - proto
   - sortkeys
 - name: github.com/golang/glog
-  version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
+  version: 44145f04b68cf362d9c4df2182967c2275eaefed
 - name: github.com/golang/protobuf
   version: 4bd1920723d7b7c925de087aa32e2187708897f7
   subpackages:
@@ -330,7 +330,7 @@ imports:
 - name: gopkg.in/inf.v0
   version: 3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4
 - name: gopkg.in/yaml.v2
-  version: d670f9405373e636a5a2765eea47fac0c9bc91a4
+  version: 53feefa2559fb8dfa8d81baad31be332c97d6c77
 - name: k8s.io/api
   version: 9b9dca205a15b6ce9ef10091f05d60a13fdcf418
   subpackages:
