@@ -1781,7 +1781,7 @@ write_files:
       hostNetwork: true
       containers:
       - name: k8s-api-server
-        image: quay.io/giantswarm/hyperkube:1.9.2
+        image: quay.io/giantswarm/hyperkube:v1.9.2
         command:
         - /hyperkube
         - apiserver
@@ -1805,7 +1805,7 @@ write_files:
         - --etcd-cafile=/etc/kubernetes/ssl/etcd/server-ca.pem
         - --etcd-certfile=/etc/kubernetes/ssl/etcd/server-crt.pem
         - --etcd-keyfile=/etc/kubernetes/ssl/etcd/server-key.pem
-        - --advertise-address=${DEFAULT_IPV4}
+        - --advertise-address={{.Hyperkube.Apiserver.BindAddress}}
         - --runtime-config=api/all=true
         - --logtostderr=true
         - --tls-cert-file=/etc/kubernetes/ssl/apiserver-crt.pem
@@ -1821,16 +1821,9 @@ write_files:
         resources:
           requests:
             cpu: 300m
-        livenessProbe:
-          httpGet:
-            scheme: HTTPS
-            port: 443
-            path: /healthz
-          initialDelaySeconds: 15
-          timeoutSeconds: 15
         ports:
-        - containerPort: 443
-          hostPort: 443
+        - containerPort: {{.Cluster.Kubernetes.API.SecurePort}}
+          hostPort: {{.Cluster.Kubernetes.API.SecurePort}}
           name: https
         volumeMounts:
         - mountPath: /var/log/apiserver/
@@ -1842,8 +1835,7 @@ write_files:
         - mountPath: /etc/kubernetes/manifests
           name: k8s-manifests
           readOnly: true
-        - mountPath: /etc/kubernetes/secrets/token_sign_key.pem
-          subPath: token_sign_key.pem
+        - mountPath: /etc/kubernetes/secrets/
           name: k8s-secrets
           readOnly: true
         - mountPath: /etc/kubernetes/ssl/
@@ -1860,11 +1852,11 @@ write_files:
           path: /etc/kubernetes/manifests
         name: k8s-manifests
       - hostPath:
-          path: /etc/kubernetes/ssl
-        name: ssl-certs-kubernetes
-      - hostPath:
           path: /etc/kubernetes/secrets
         name: k8s-secrets
+        - hostPath:
+          path: /etc/kubernetes/ssl
+        name: ssl-certs-kubernetes
 
 - path: /etc/kubernetes/manifests/k8s-controller-manager.yml
   owner: root
@@ -1878,7 +1870,7 @@ write_files:
     spec:
       containers:
       - name: k8s-controller-manager
-        image: quay.io/giantswarm/hyperkube:1.9.2
+        image: quay.io/giantswarm/hyperkube:v1.9.2
         command:
         - /hyperkube
         - controller-manager
@@ -1902,12 +1894,10 @@ write_files:
           initialDelaySeconds: 15
           timeoutSeconds: 15
         volumeMounts:
-        - mountPath: /etc/kubernetes/config/controller-manager-kubeconfig.yml
-          subPath: controller-manager-kubeconfig.yml
+        - mountPath: /etc/kubernetes/config/
           name: k8s-config
           readOnly: true
-        - mountPath: /etc/kubernetes/secrets/token_sign_key.pem
-          subPath: token_sign_key.pem
+        - mountPath: /etc/kubernetes/secrets/
           name: k8s-secrets
           readOnly: true
         - mountPath: /etc/kubernetes/ssl/
@@ -1937,7 +1927,7 @@ write_files:
       hostNetwork: true
       containers:
       - name: k8s-scheduler
-        image: quay.io/giantswarm/hyperkube:1.9.2
+        image: quay.io/giantswarm/hyperkube:v1.9.2
         command:
         - /hyperkube
         - scheduler
@@ -1956,8 +1946,7 @@ write_files:
           initialDelaySeconds: 15
           timeoutSeconds: 15
         volumeMounts:
-        - mountPath: /etc/kubernetes/config/scheduler-kubeconfig.yml
-          subPath: scheduler-kubeconfig.yml
+        - mountPath: /etc/kubernetes/config/
           name: k8s-config
           readOnly: true
         - mountPath: /etc/kubernetes/ssl/
